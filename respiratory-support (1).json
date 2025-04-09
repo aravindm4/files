@@ -1,0 +1,85 @@
+{
+  "id": "2c2e0b28-09ee-4822-ae78-d8bc5802b506",
+  "slug": "respiratory-support",
+  "version": "",
+  "title": "Respiratory Support record IPD",
+  "description": "",
+  "status": "active",
+  "subject_type": "encounter",
+  "styling_metadata": {},
+  "questions": [
+    {
+      "id": "966f5552-411e-4f70-b4ea-d3a97ed4c33a",
+      "text": "Respiratory Support",
+      "type": "group",
+      "link_id": "1",
+      "questions": [
+        {
+          "id": "e6eb19ac-5004-45a9-8253-5799409d0bbb",
+          "text": "Bilateral Air Entry",
+          "type": "boolean",
+          "link_id": "1.1"
+        },
+        {
+          "id": "71e03c89-8fca-45bf-a092-658e6e571d44",
+          "text": "EtCO2 (mmHg)",
+          "type": "integer",
+          "link_id": "1.2"
+        }
+      ]
+    },
+    {
+      "id": "0b98bac5-3f27-48b0-97ce-a7ba29299a85",
+      "text": "Respiratory Support",
+      "type": "choice",
+      "link_id": "2",
+      "answer_option": [
+        {
+          "value": "Non-Invasive ventilator (NIV)"
+        },
+        {
+          "value": "Invasive ventilator (IV)"
+        },
+        {
+          "value": "Oxygen Support"
+        },
+        {
+          "value": "None"
+        }
+      ]
+    }
+  ],
+  "created_by": {
+    "meta": {},
+    "id": "b24067d6-2d88-40f1-a7f6-97100c64ea0a",
+    "first_name": "Admin",
+    "last_name": "Admin",
+    "phone_number": "+919696969696",
+    "prefix": null,
+    "suffix": null,
+    "last_login": "2025-04-09T07:06:12.010030Z",
+    "profile_picture_url": "https://care-data.blr1.digitaloceanspaces.com/care-data/avatars/b24067d6-2d88-40f1-a7f6-97100c64ea0a_71bf4bcf819adfae.png",
+    "user_type": null,
+    "gender": null,
+    "username": "admin",
+    "mfa_enabled": false,
+    "deleted": false
+  },
+  "updated_by": {
+    "meta": {},
+    "id": "b24067d6-2d88-40f1-a7f6-97100c64ea0a",
+    "first_name": "Admin",
+    "last_name": "Admin",
+    "phone_number": "+919696969696",
+    "prefix": null,
+    "suffix": null,
+    "last_login": "2025-04-09T07:06:12.010030Z",
+    "profile_picture_url": "https://care-data.blr1.digitaloceanspaces.com/care-data/avatars/b24067d6-2d88-40f1-a7f6-97100c64ea0a_71bf4bcf819adfae.png",
+    "user_type": null,
+    "gender": null,
+    "username": "admin",
+    "mfa_enabled": false,
+    "deleted": false
+  },
+  "tags": []
+}
