@@ -1,0 +1,298 @@
+{
+  "id": "a66174ca-083a-4040-887a-a42517cc401b",
+  "slug": "consultation-v2",
+  "version": "",
+  "title": "Consultation Form",
+  "description": "A detailed consultation form for recording findings and advising treatments.",
+  "status": "active",
+  "subject_type": "encounter",
+  "styling_metadata": {
+    "classes": "grid-2-col"
+  },
+  "questions": [
+    {
+      "id": "a5f234d8-1c6b-4ea6-bc0a-08a34c4d9427",
+      "code": {
+        "code": "118575009",
+        "system": "http://snomed.info/sct",
+        "display": "Date and time of assessment"
+      },
+      "text": "Date and Time of Assessment",
+      "type": "dateTime",
+      "link_id": "1.0",
+      "required": true,
+      "styling_metadata": {
+        "classes": "col-span-all"
+      }
+    },
+    {
+      "id": "a48a5529-64b6-4b61-8b55-049f58714362",
+      "text": "Vitals",
+      "type": "group",
+      "link_id": "1.1",
+      "questions": [
+        {
+          "id": "0ddc7bd3-dd93-4c32-90b4-fc988cc6ed9f",
+          "text": "Blood Pressure",
+          "type": "group",
+          "link_id": "1.1.1",
+          "questions": [
+            {
+              "id": "45687bd1-a7ad-4be6-bd04-91b2b76dfeb3",
+              "code": {
+                "code": "8480-6",
+                "system": "http://loinc.org",
+                "display": "Systolic blood pressure"
+              },
+              "text": "Systolic BP",
+              "type": "integer",
+              "unit": {
+                "code": "mm[Hg]",
+                "system": "http://unitsofmeasure.org",
+                "display": "millimeters of mercury"
+              },
+              "link_id": "1.1.1.1",
+              "required": true
+            },
+            {
+              "id": "80f1eec8-9bbb-434c-ab8a-f15f61dc57c2",
+              "code": {
+                "code": "8462-4",
+                "system": "http://loinc.org",
+                "display": "Diastolic blood pressure"
+              },
+              "text": "Diastolic BP",
+              "type": "integer",
+              "unit": {
+                "code": "mm[Hg]",
+                "system": "http://unitsofmeasure.org",
+                "display": "millimeters of mercury"
+              },
+              "link_id": "1.1.1.2",
+              "required": true
+            }
+          ],
+          "styling_metadata": {
+            "classes": "col-span-all",
+            "containerClasses": "grid-2-col"
+          }
+        },
+        {
+          "id": "02a09bbc-3f71-4a33-b4bb-bd357ba08cae",
+          "code": {
+            "code": "9279-1",
+            "system": "http://loinc.org",
+            "display": "Respiratory rate"
+          },
+          "text": "Respiratory Rate",
+          "type": "integer",
+          "unit": {
+            "code": "/min",
+            "system": "http://unitsofmeasure.org",
+            "display": "per minute"
+          },
+          "link_id": "1.1.2",
+          "required": false
+        },
+        {
+          "id": "0e1769bf-eed4-41fa-85f5-1cbb0be65fe2",
+          "code": {
+            "code": "80319-7",
+            "system": "http://loinc.org",
+            "display": "Respiratory sounds"
+          },
+          "text": "Respiratory Sounds",
+          "type": "choice",
+          "link_id": "1.1.3",
+          "required": false,
+          "answer_option": [
+            {
+              "value": "NORMAL"
+            },
+            {
+              "value": "WHEEZING"
+            },
+            {
+              "value": "CRACKLES"
+            },
+            {
+              "value": "DIMINISHED"
+            }
+          ]
+        },
+        {
+          "id": "f8406269-4515-4f52-b749-63b3b0d25184",
+          "code": {
+            "code": "45333-5",
+            "system": "http://loinc.org",
+            "display": "Heart sounds"
+          },
+          "text": "Heart Sounds",
+          "type": "choice",
+          "link_id": "1.1.4",
+          "required": false,
+          "answer_option": [
+            {
+              "value": "NORMAL"
+            },
+            {
+              "value": "MURMUR"
+            },
+            {
+              "value": "GALLOP"
+            },
+            {
+              "value": "DIMINISHED"
+            }
+          ]
+        },
+        {
+          "id": "3001fc78-0957-4973-8aca-8fba930e8f49",
+          "code": {
+            "code": "8867-4",
+            "system": "http://loinc.org",
+            "display": "Heart rate"
+          },
+          "text": "Heart Rate",
+          "type": "integer",
+          "unit": {
+            "code": "{beats}/min",
+            "system": "http://unitsofmeasure.org",
+            "display": "beats per minute"
+          },
+          "link_id": "1.1.5",
+          "required": false
+        },
+        {
+          "id": "cde76f21-3280-42dc-bc8a-0ff506c29149",
+          "code": {
+            "code": "8310-5",
+            "system": "http://loinc.org",
+            "display": "Body temperature"
+          },
+          "text": "Temperature",
+          "type": "decimal",
+          "unit": {
+            "code": "[degF]",
+            "system": "http://unitsofmeasure.org",
+            "display": "degrees Fahrenheit"
+          },
+          "link_id": "1.1.6",
+          "required": false
+        }
+      ],
+      "styling_metadata": {
+        "containerClasses": "grid-2-col"
+      }
+    },
+    {
+      "id": "c2d91ef3-6a2c-4d6b-9f3a-5c87f1e1b5a7",
+      "code": {
+        "code": "1269489004",
+        "system": "http://snomed.info/sct",
+        "display": "Clinical history"
+      },
+      "text": "Clinical History",
+      "type": "text",
+      "link_id": "1.2",
+      "required": false
+    },
+    {
+      "id": "7d82e8f3-d3a5-4b0f-8a91-f473d4ef3d67",
+      "code": {
+        "code": "302199004",
+        "system": "http://snomed.info/sct",
+        "display": "Examination"
+      },
+      "text": "Examination",
+      "type": "text",
+      "link_id": "1.3",
+      "required": false
+    },
+    {
+      "id": "b44f4ce8-6229-4b52-96d3-14b1928c2081",
+      "text": "Symptoms",
+      "type": "structured",
+      "link_id": "1.4",
+      "required": true,
+      "structured_type": "symptom"
+    },
+    {
+      "id": "b44f4ce8-6229-4b52-96d3-14b1928c2082",
+      "text": "Diagnosis",
+      "type": "structured",
+      "link_id": "1.5",
+      "required": true,
+      "structured_type": "diagnosis"
+    },
+    {
+      "id": "ae4c3888-df04-4d49-aeb4-57b4c2bff4aa",
+      "text": "Advise Medicine",
+      "type": "structured",
+      "link_id": "1.6",
+      "required": true,
+      "structured_type": "medication_request"
+    },
+    {
+      "id": "43b16d6f-bff0-4e38-9d8f-73d2e57ef462",
+      "text": "Admission Recommended",
+      "type": "choice",
+      "link_id": "1.7",
+      "required": false,
+      "answer_option": [
+        {
+          "value": "YES"
+        },
+        {
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "7607eed2-1dc8-4ca1-a6c8-03ce0b6fe308",
+      "text": "Follow-up Advice",
+      "type": "text",
+      "link_id": "1.8",
+      "required": false
+    }
+  ],
+  "created_by": {
+    "meta": {},
+    "id": "b24067d6-2d88-40f1-a7f6-97100c64ea0a",
+    "first_name": "Admin",
+    "last_name": "Admin",
+    "phone_number": "+919696969696",
+    "prefix": null,
+    "suffix": null,
+    "last_login": "2025-04-21T17:42:16.623559Z",
+    "profile_picture_url": "https://care-data.blr1.digitaloceanspaces.com/care-data/avatars/b24067d6-2d88-40f1-a7f6-97100c64ea0a_71bf4bcf819adfae.png",
+    "user_type": null,
+    "gender": null,
+    "username": "admin",
+    "mfa_enabled": false,
+    "deleted": false
+  },
+  "updated_by": {
+    "meta": {},
+    "id": "b24067d6-2d88-40f1-a7f6-97100c64ea0a",
+    "first_name": "Admin",
+    "last_name": "Admin",
+    "phone_number": "+919696969696",
+    "prefix": null,
+    "suffix": null,
+    "last_login": "2025-04-21T17:42:16.623559Z",
+    "profile_picture_url": "https://care-data.blr1.digitaloceanspaces.com/care-data/avatars/b24067d6-2d88-40f1-a7f6-97100c64ea0a_71bf4bcf819adfae.png",
+    "user_type": null,
+    "gender": null,
+    "username": "admin",
+    "mfa_enabled": false,
+    "deleted": false
+  },
+  "tags": [
+    {
+      "id": "0dba2ca1-659a-4840-af4b-e4fa23bd6b69",
+      "name": "Outpatient Actions",
+      "slug": "outpatient_actions"
+    }
+  ]
+}
