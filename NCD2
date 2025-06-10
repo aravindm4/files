@@ -1,0 +1,121 @@
+{
+  "id": "0d8931a1-3d0f-4d75-9b26-4c5be62fc8fb",
+  "slug": "ncd-risk-assessment-v1",
+  "version": "",
+  "title": "NCD Risk Assessment Form",
+  "description": "Screening adults (30 y+) for common NCD risk factors.",
+  "status": "active",
+  "subject_type": "patient",
+  "styling_metadata": {
+    "classes": "grid-2-col"
+  },
+  "questions": [
+    {
+      "id": "156a8cb0-7e72-45f6-9e26-75f45ffb4ed1",
+      "text": "Full Name",
+      "type": "string",
+      "link_id": "1.1",
+      "required": true
+    },
+    {
+      "id": "9d738c56-35f0-4c66-9d9a-ef9d1ae2717c",
+      "text": "Age (years)",
+      "type": "integer",
+      "link_id": "1.2",
+      "required": true
+    },
+    {
+      "id": "f74e0a1c-8844-45bd-9a7e-8f40f5662524",
+      "text": "Sex",
+      "type": "choice",
+      "link_id": "1.3",
+      "required": true,
+      "answer_option": [
+        {
+          "value": "MALE"
+        },
+        {
+          "value": "FEMALE"
+        },
+        {
+          "value": "OTHER"
+        }
+      ]
+    },
+    {
+      "id": "5d38d035-9c70-46b7-8a7a-45ef6d682a72",
+      "text": "Contact Number",
+      "type": "string",
+      "link_id": "1.4"
+    },
+    {
+      "id": "4a03f436-8a63-4b68-bc32-74aa5e0a5e34",
+      "text": "Date of Assessment",
+      "type": "date",
+      "link_id": "1.5",
+      "required": true
+    },
+    {
+      "id": "5694138f-f83a-42cf-845f-0fa3b95db65e",
+      "text": "Previously diagnosed hypertension?",
+      "type": "boolean",
+      "link_id": "2.1"
+    },
+    {
+      "id": "e78e5e2e-1d68-465a-bfa3-5c7ce3bf5474",
+      "text": "Previously diagnosed diabetes?",
+      "type": "boolean",
+      "link_id": "2.2"
+    },
+    {
+      "id": "1a2ee9b5-fb92-48e0-b415-298f39b63df5",
+      "text": "Family history of heart disease or stroke?",
+      "type": "boolean",
+      "link_id": "2.3"
+    },
+    {
+      "id": "7cf1eb24-d798-49a3-8672-27391619e26d",
+      "text": "Currently on medication for any chronic illness?",
+      "type": "boolean",
+      "link_id": "2.4"
+    },
+    {
+      "id": "9f956eb4-83c1-46c5-bf55-16bb9cb77f04",
+      "text": "List current medications",
+      "type": "string",
+      "link_id": "2.5",
+      "enable_when": [
+        {
+          "question": "2.4",
+          "operator": "equals",
+          "answerBoolean": true
+        }
+      ]
+    }
+  ],
+  "created_by": {
+    "meta": {},
+    "id": "00000000-0000-0000-0000-000000000000",
+    "first_name": "System",
+    "last_name": "",
+    "phone_number": "",
+    "username": "system",
+    "deleted": false
+  },
+  "updated_by": {
+    "meta": {},
+    "id": "00000000-0000-0000-0000-000000000000",
+    "first_name": "System",
+    "last_name": "",
+    "phone_number": "",
+    "username": "system",
+    "deleted": false
+  },
+  "tags": [
+    {
+      "id": "b4f115c8-0af4-4481-aa42-df6ba85f843d",
+      "name": "NCD Screening",
+      "slug": "ncd_screening"
+    }
+  ]
+}
