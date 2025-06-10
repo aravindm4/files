@@ -1,0 +1,371 @@
+{
+  "id": "8ab78549-2ed0-4b5f-99ec-6b12f0b0603d",
+  "slug": "ncd-risk-assessment-v1",
+  "version": "",
+  "title": "NCD Risk Assessment Form",
+  "description": "Screening adults (≥30 y) for common non-communicable disease risk factors.",
+  "status": "active",
+  "subject_type": "patient",
+  "styling_metadata": { "classes": "grid-2-col" },
+
+  "questions": [
+    /* ────────────────────────── 1. DATE & TIME ────────────────────────── */
+    {
+      "id": "41f83639-3d49-49d9-85d2-4f2e7c2a68e5",
+      "code": {
+        "code": "118575009",
+        "system": "http://snomed.info/sct",
+        "display": "Date and time of assessment"
+      },
+      "text": "Date and Time of Assessment",
+      "type": "dateTime",
+      "link_id": "1.0",
+      "required": true,
+      "styling_metadata": { "classes": "col-span-all" }
+    },
+
+    /* ───────────────────── 1.1 PERSONAL DETAILS GROUP ───────────────────── */
+    {
+      "id": "c0348158-8c76-4efa-a275-96ad416d5c6b",
+      "text": "Personal Details",
+      "type": "group",
+      "link_id": "1.1",
+      "questions": [
+        {
+          "id": "fb9b6b05-f822-4f67-b003-4a280bb0fa0c",
+          "text": "Full Name",
+          "type": "string",
+          "link_id": "1.1.1",
+          "required": true
+        },
+        {
+          "id": "b9f8e424-16d8-466d-8afb-63dd6a7c9c2d",
+          "code": {
+            "code": "30525-0",
+            "system": "http://loinc.org",
+            "display": "Age"
+          },
+          "text": "Age (years)",
+          "type": "integer",
+          "link_id": "1.1.2",
+          "required": true
+        },
+        {
+          "id": "9dfb4a57-430f-4c01-8a46-9b94e3792f46",
+          "text": "Sex",
+          "type": "choice",
+          "link_id": "1.1.3",
+          "required": true,
+          "answer_option": [
+            { "value": "MALE" },
+            { "value": "FEMALE" },
+            { "value": "OTHER" }
+          ]
+        },
+        {
+          "id": "ee04e1ea-32ef-4ad9-98b3-2e1f5fb67ca0",
+          "text": "Contact Number",
+          "type": "string",
+          "link_id": "1.1.4"
+        },
+        {
+          "id": "3ba6d4dc-8a62-4419-9162-4c4f216fca6d",
+          "text": "Address",
+          "type": "string",
+          "link_id": "1.1.5"
+        }
+      ],
+      "styling_metadata": { "containerClasses": "grid-2-col" }
+    },
+
+    /* ───────────────────────── 2.0 MEDICAL HISTORY ───────────────────────── */
+    {
+      "id": "e4155bf9-2137-4149-95df-f4ece34e4c5f",
+      "text": "Medical History",
+      "type": "group",
+      "link_id": "2.0",
+      "questions": [
+        {
+          "id": "0eb2769f-2762-4af6-917f-ecea48c7469c",
+          "code": {
+            "code": "38341003",
+            "system": "http://snomed.info/sct",
+            "display": "Hypertensive disorder, systemic arterial"
+          },
+          "text": "Diagnosed hypertension?",
+          "type": "choice",
+          "link_id": "2.0.1",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        },
+        {
+          "id": "486a2ac0-5f35-4c70-9e1c-f8c846906f28",
+          "code": {
+            "code": "44054006",
+            "system": "http://snomed.info/sct",
+            "display": "Diabetes mellitus type 2"
+          },
+          "text": "Diagnosed diabetes?",
+          "type": "choice",
+          "link_id": "2.0.2",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        },
+        {
+          "id": "5de58051-1592-4fbd-8b89-4a4c1b5e6909",
+          "text": "Family history of heart disease / stroke?",
+          "type": "choice",
+          "link_id": "2.0.3",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        },
+        {
+          "id": "5b9be679-2e61-47b1-8ed6-9b04545df29e",
+          "text": "Currently on chronic medication?",
+          "type": "choice",
+          "link_id": "2.0.4",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        },
+        {
+          "id": "49c94e6b-7fc0-48fb-91ab-0a6783ceebe8",
+          "text": "List current medications (if any)",
+          "type": "text",
+          "link_id": "2.0.5"
+        }
+      ]
+    },
+
+    /* ───────────────────── 3.0 LIFESTYLE RISK FACTORS ───────────────────── */
+    {
+      "id": "f3e8a081-7b33-44a0-84d2-c0258dce9270",
+      "text": "Lifestyle Risk Factors",
+      "type": "group",
+      "link_id": "3.0",
+      "questions": [
+        {
+          "id": "e7e6c913-b557-4faa-91d1-2106541dafcb",
+          "text": "Current tobacco use?",
+          "type": "choice",
+          "link_id": "3.0.1",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        },
+        {
+          "id": "df37a431-98b4-4e46-b19a-9452f5c97a6c",
+          "text": "Type of tobacco used",
+          "type": "choice",
+          "link_id": "3.0.2",
+          "answer_option": [
+            { "value": "SMOKING" },
+            { "value": "SMOKELESS" },
+            { "value": "BOTH" }
+          ]
+        },
+        {
+          "id": "4ba902e4-ae5d-4e94-81dc-6089dda76faa",
+          "text": "Alcohol consumption?",
+          "type": "choice",
+          "link_id": "3.0.3",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        },
+        {
+          "id": "238184d9-1149-46b7-b359-e5cea132cfcd",
+          "text": "Alcohol use frequency",
+          "type": "choice",
+          "link_id": "3.0.4",
+          "answer_option": [
+            { "value": "DAILY" },
+            { "value": "WEEKLY" },
+            { "value": "MONTHLY" },
+            { "value": "OCCASIONAL" }
+          ]
+        },
+        {
+          "id": "dfa90192-b0a7-4059-9bda-487372f1b5a5",
+          "text": "< 5 servings fruit/veg per day?",
+          "type": "choice",
+          "link_id": "3.0.5",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        },
+        {
+          "id": "7881633d-61e5-41d3-bf68-f4c21bb5fdb3",
+          "text": "Physical activity < 30 min/day?",
+          "type": "choice",
+          "link_id": "3.0.6",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        },
+        {
+          "id": "666f8e09-77d3-41cc-ad7b-01dcffcab51a",
+          "text": "Frequent high-salt / processed food?",
+          "type": "choice",
+          "link_id": "3.0.7",
+          "answer_option": [
+            { "value": "YES" },
+            { "value": "NO" }
+          ]
+        }
+      ]
+    },
+
+    /* ───────────────────────── 4.0 MEASUREMENTS ───────────────────────── */
+    {
+      "id": "7d8c4728-239b-4fb5-b2bb-8f1bc16d716e",
+      "text": "Measurements",
+      "type": "group",
+      "link_id": "4.0",
+      "questions": [
+        {
+          "id": "d0f37040-efe6-4765-b514-e2bca6ec9e2b",
+          "text": "Blood Pressure",
+          "type": "group",
+          "link_id": "4.0.1",
+          "questions": [
+            {
+              "id": "f1644017-87e3-4975-8aa2-19d7107dd3f0",
+              "code": {
+                "code": "8480-6",
+                "system": "http://loinc.org",
+                "display": "Systolic blood pressure"
+              },
+              "text": "Systolic (mmHg)",
+              "type": "integer",
+              "unit": {
+                "code": "mm[Hg]",
+                "system": "http://unitsofmeasure.org",
+                "display": "millimeters of mercury"
+              },
+              "link_id": "4.0.1.1",
+              "required": true
+            },
+            {
+              "id": "966c03df-0860-4b6e-aea3-1a068609363d",
+              "code": {
+                "code": "8462-4",
+                "system": "http://loinc.org",
+                "display": "Diastolic blood pressure"
+              },
+              "text": "Diastolic (mmHg)",
+              "type": "integer",
+              "unit": {
+                "code": "mm[Hg]",
+                "system": "http://unitsofmeasure.org",
+                "display": "millimeters of mercury"
+              },
+              "link_id": "4.0.1.2",
+              "required": true
+            }
+          ],
+          "styling_metadata": { "classes": "col-span-all", "containerClasses": "grid-2-col" }
+        },
+
+        {
+          "id": "0b7d2e63-02f2-4673-8a4d-8bbb584cd61d",
+          "code": {
+            "code": "2339-0",
+            "system": "http://loinc.org",
+            "display": "Glucose (random) [Mass/volume] in Blood"
+          },
+          "text": "Random Blood Sugar (mg/dL)",
+          "type": "decimal",
+          "unit": {
+            "code": "mg/dL",
+            "system": "http://unitsofmeasure.org",
+            "display": "milligrams per decilitre"
+          },
+          "link_id": "4.0.2"
+        },
+        {
+          "id": "a05bcb2e-2fa0-42a8-9fc7-5dc912c4786f",
+          "code": {
+            "code": "29463-7",
+            "system": "http://loinc.org",
+            "display": "Body weight"
+          },
+          "text": "Weight (kg)",
+          "type": "decimal",
+          "unit": {
+            "code": "kg",
+            "system": "http://unitsofmeasure.org",
+            "display": "kilograms"
+          },
+          "link_id": "4.0.3"
+        },
+        {
+          "id": "4d1606c5-c71b-40e9-8234-ae03d32420f8",
+          "code": {
+            "code": "8302-2",
+            "system": "http://loinc.org",
+            "display": "Body height"
+          },
+          "text": "Height (cm)",
+          "type": "decimal",
+          "unit": {
+            "code": "cm",
+            "system": "http://unitsofmeasure.org",
+            "display": "centimeters"
+          },
+          "link_id": "4.0.4"
+        },
+        {
+          "id": "ed74d24a-fb84-4519-a890-72cca073252e",
+          "code": {
+            "code": "39156-5",
+            "system": "http://loinc.org",
+            "display": "Body mass index (BMI) [Ratio]"
+          },
+          "text": "BMI (kg/m²)",
+          "type": "decimal",
+          "unit": {
+            "code": "kg/m2",
+            "system": "http://unitsofmeasure.org",
+            "display": "kilograms per square metre"
+          },
+          "link_id": "4.0.5"
+        }
+      ],
+      "styling_metadata": { "containerClasses": "grid-2-col" }
+    }
+  ],
+
+  "created_by": {
+    "meta": {},
+    "id": "00000000-0000-0000-0000-000000000000",
+    "first_name": "System",
+    "username": "system",
+    "deleted": false
+  },
+  "updated_by": {
+    "meta": {},
+    "id": "00000000-0000-0000-0000-000000000000",
+    "first_name": "System",
+    "username": "system",
+    "deleted": false
+  },
+  "tags": [
+    {
+      "id": "c986eb7d-1fc5-4320-9455-8b98c3f3f723",
+      "name": "NCD Screening",
+      "slug": "ncd_screening"
+    }
+  ]
+}
