@@ -1,0 +1,232 @@
+{
+  "id": "98c553d1-6f56-43c9-bf54-d83ad96357e7",
+  "slug": "ncd_risk_assessment_form",
+  "version": "1.0",
+  "title": "NCD Risk Assessment Form",
+  "description": "Non-Communicable Disease risk assessment for adults aged 30 years and above.",
+  "status": "active",
+  "subject_type": "patient",
+  "styling_metadata": {},
+  "questions": [
+    {
+      "id": "645b2d52-ad6c-4c83-8ba5-48d5b640e02e",
+      "text": "Full name",
+      "type": "string",
+      "link_id": "1"
+    },
+    {
+      "id": "a5aa1a3e-27a9-429b-b631-763758c592d4",
+      "text": "Age (years)",
+      "type": "integer",
+      "link_id": "2"
+    },
+    {
+      "id": "32cee5fd-6035-4e05-add5-446a055970e5",
+      "text": "Sex",
+      "type": "choice",
+      "link_id": "3",
+      "answer_option": [
+        { "value": "Male" },
+        { "value": "Female" },
+        { "value": "Other" }
+      ]
+    },
+    {
+      "id": "a52426d7-3541-4933-b25b-b031f78e6a48",
+      "text": "Contact number",
+      "type": "string",
+      "link_id": "4"
+    },
+    {
+      "id": "7e90da09-89a8-4a66-ae36-6c10d720f713",
+      "text": "Address",
+      "type": "string",
+      "link_id": "5"
+    },
+    {
+      "id": "8441bec0-868a-4690-97a0-aef49e8beb1d",
+      "text": "Date of assessment",
+      "type": "date",
+      "link_id": "6"
+    },
+
+    /* ------- Medical history ------- */
+    {
+      "id": "16caf433-4261-413a-9d89-e47ca59717a3",
+      "text": "Have you ever been diagnosed with hypertension (high blood pressure)?",
+      "type": "boolean",
+      "link_id": "7"
+    },
+    {
+      "id": "273ca5b8-c2ec-40c5-8b90-f9ba6841d9ab",
+      "text": "Have you ever been diagnosed with diabetes?",
+      "type": "boolean",
+      "link_id": "8"
+    },
+    {
+      "id": "077a25c8-99a5-4a7e-a31d-0ffd00b45394",
+      "text": "Any history of heart disease or stroke among first-degree relatives?",
+      "type": "boolean",
+      "link_id": "9"
+    },
+    {
+      "id": "8fb22df7-d8ff-42fc-8292-3f95faf55c89",
+      "text": "Are you currently on medication for any chronic illness?",
+      "type": "boolean",
+      "link_id": "10"
+    },
+    {
+      "id": "c160c69f-4109-45e9-9632-6266846001b3",
+      "text": "List current medications",
+      "type": "string",
+      "link_id": "11",
+      "enable_when": [
+        {
+          "question": "10",
+          "operator": "equals",
+          "answer": "Yes"
+        }
+      ]
+    },
+
+    /* ------- Lifestyle risk factors ------- */
+    {
+      "id": "9fa66d40-2588-42a2-bb95-c237683ec318",
+      "text": "Do you currently use tobacco in any form?",
+      "type": "boolean",
+      "link_id": "12"
+    },
+    {
+      "id": "2337e9f4-dfa1-41be-9c53-329cb1f541e2",
+      "text": "Type of tobacco used",
+      "type": "choice",
+      "link_id": "13",
+      "answer_option": [
+        { "value": "Smoking" },
+        { "value": "Smokeless" },
+        { "value": "Both" }
+      ],
+      "enable_when": [
+        {
+          "question": "12",
+          "operator": "equals",
+          "answer": "Yes"
+        }
+      ]
+    },
+    {
+      "id": "93359ede-ccd3-446c-bbf6-50d87698bc75",
+      "text": "Do you consume alcohol?",
+      "type": "boolean",
+      "link_id": "14"
+    },
+    {
+      "id": "9364d385-acde-4c4a-b457-27be713b022a",
+      "text": "Frequency of alcohol consumption",
+      "type": "choice",
+      "link_id": "15",
+      "answer_option": [
+        { "value": "Daily" },
+        { "value": "Weekly" },
+        { "value": "Monthly" },
+        { "value": "Occasionally" }
+      ],
+      "enable_when": [
+        {
+          "question": "14",
+          "operator": "equals",
+          "answer": "Yes"
+        }
+      ]
+    },
+    {
+      "id": "35f445ec-1119-438f-8e35-281f23118a70",
+      "text": "Do you eat fewer than five servings of fruits/vegetables per day?",
+      "type": "boolean",
+      "link_id": "16"
+    },
+    {
+      "id": "dbcf0d73-a4c0-440c-a2bf-694dba795288",
+      "text": "Do you engage in physical activity for less than 30 minutes per day?",
+      "type": "boolean",
+      "link_id": "17"
+    },
+    {
+      "id": "efc5382c-9b3a-4bc8-865b-adaf00d8367a",
+      "text": "Do you often consume high-salt or processed foods?",
+      "type": "boolean",
+      "link_id": "18"
+    },
+
+    /* ------- Measurements ------- */
+    {
+      "id": "b297e982-9de0-4d03-9dfa-436cf7925282",
+      "text": "Blood pressure – systolic (mmHg)",
+      "type": "number",
+      "link_id": "19"
+    },
+    {
+      "id": "7afded42-8414-4210-8584-3e75609ca328",
+      "text": "Blood pressure – diastolic (mmHg)",
+      "type": "number",
+      "link_id": "20"
+    },
+    {
+      "id": "d75cccc7-f6aa-4c13-a798-07fcd760d639",
+      "text": "Random blood sugar (mg/dL)",
+      "type": "number",
+      "link_id": "21"
+    },
+    {
+      "id": "985bf7d3-d7ca-4f3e-9218-163aee97e295",
+      "text": "Weight (kg)",
+      "type": "number",
+      "link_id": "22"
+    },
+    {
+      "id": "da50e548-977d-4350-b679-57557084ecca",
+      "text": "Height (cm)",
+      "type": "number",
+      "link_id": "23"
+    },
+    {
+      "id": "4ee05d26-5560-43b4-a5bb-2154be116ac3",
+      "text": "Body-mass index (BMI kg/m²)",
+      "type": "number",
+      "link_id": "24"
+    }
+  ],
+  "created_by": {
+    "meta": {},
+    "id": "00000000-0000-0000-0000-000000000000",
+    "first_name": "",
+    "last_name": "",
+    "phone_number": "",
+    "prefix": null,
+    "suffix": null,
+    "last_login": null,
+    "profile_picture_url": null,
+    "user_type": "system",
+    "gender": "",
+    "username": "system",
+    "mfa_enabled": false,
+    "deleted": false
+  },
+  "updated_by": {
+    "meta": {},
+    "id": "00000000-0000-0000-0000-000000000000",
+    "first_name": "",
+    "last_name": "",
+    "phone_number": "",
+    "prefix": null,
+    "suffix": null,
+    "last_login": null,
+    "profile_picture_url": null,
+    "user_type": "system",
+    "gender": "",
+    "username": "system",
+    "mfa_enabled": false,
+    "deleted": false
+  },
+  "tags": ["NCD", "risk_assessment"]
+}
