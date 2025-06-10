@@ -1,0 +1,235 @@
+{
+  "id": "0d8931a1-3d0f-4d75-9b26-4c5be62fc8fb",
+  "slug": "ncd-risk-assessment-v1",
+  "version": "",
+  "title": "NCD Risk Assessment Form",
+  "description": "Screening adults (30 y+) for common NCD risk factors.",
+  "status": "active",
+  "subject_type": "patient",
+  "styling_metadata": {
+    "classes": "grid-2-col"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Full Name",
+      "type": "string",
+      "link_id": "1.1",
+      "required": true
+    },
+    {
+      "id": "q2",
+      "text": "Age (years)",
+      "type": "integer",
+      "link_id": "1.2",
+      "required": true
+    },
+    {
+      "id": "q3",
+      "text": "Sex",
+      "type": "choice",
+      "link_id": "1.3",
+      "required": true,
+      "answer_option": [
+        { "value": "MALE" },
+        { "value": "FEMALE" },
+        { "value": "OTHER" }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Date of Assessment",
+      "type": "date",
+      "link_id": "1.4",
+      "required": true
+    },
+    {
+      "id": "q5",
+      "text": "Previously diagnosed with hypertension (high blood pressure)?",
+      "type": "boolean",
+      "link_id": "2.1"
+    },
+    {
+      "id": "q6",
+      "text": "Previously diagnosed with diabetes?",
+      "type": "boolean",
+      "link_id": "2.2"
+    },
+    {
+      "id": "q7",
+      "text": "Family history of heart disease or stroke?",
+      "type": "boolean",
+      "link_id": "2.3"
+    },
+    {
+      "id": "q8",
+      "text": "Currently on medication for any chronic illness?",
+      "type": "boolean",
+      "link_id": "2.4"
+    },
+    {
+      "id": "q9",
+      "text": "List current medications",
+      "type": "string",
+      "link_id": "2.5",
+      "enable_when": [
+        {
+          "question": "2.4",
+          "operator": "equals",
+          "answerBoolean": true
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Current tobacco use?",
+      "type": "boolean",
+      "link_id": "3.1"
+    },
+    {
+      "id": "q11",
+      "text": "Type of tobacco used",
+      "type": "choice",
+      "link_id": "3.2",
+      "answer_option": [
+        { "value": "SMOKING" },
+        { "value": "SMOKELESS" },
+        { "value": "BOTH" }
+      ],
+      "enable_when": [
+        {
+          "question": "3.1",
+          "operator": "equals",
+          "answerBoolean": true
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "Alcohol consumption?",
+      "type": "boolean",
+      "link_id": "3.3"
+    },
+    {
+      "id": "q13",
+      "text": "Frequency of alcohol use",
+      "type": "choice",
+      "link_id": "3.4",
+      "answer_option": [
+        { "value": "DAILY" },
+        { "value": "WEEKLY" },
+        { "value": "MONTHLY" },
+        { "value": "OCCASIONAL" }
+      ],
+      "enable_when": [
+        {
+          "question": "3.3",
+          "operator": "equals",
+          "answerBoolean": true
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "text": "Less than 5 servings of fruits/vegetables per day?",
+      "type": "boolean",
+      "link_id": "3.5"
+    },
+    {
+      "id": "q15",
+      "text": "Physical activity less than 30 minutes per day?",
+      "type": "boolean",
+      "link_id": "3.6"
+    },
+    {
+      "id": "q16",
+      "text": "Frequent consumption of high-salt or processed foods?",
+      "type": "boolean",
+      "link_id": "3.7"
+    },
+    {
+      "id": "q17",
+      "text": "Systolic Blood Pressure (mmHg)",
+      "type": "integer",
+      "link_id": "4.1",
+      "unit": {
+        "code": "mm[Hg]",
+        "system": "http://unitsofmeasure.org",
+        "display": "millimeters of mercury"
+      }
+    },
+    {
+      "id": "q18",
+      "text": "Diastolic Blood Pressure (mmHg)",
+      "type": "integer",
+      "link_id": "4.2",
+      "unit": {
+        "code": "mm[Hg]",
+        "system": "http://unitsofmeasure.org",
+        "display": "millimeters of mercury"
+      }
+    },
+    {
+      "id": "q19",
+      "text": "Random Blood Sugar (mg/dL)",
+      "type": "decimal",
+      "link_id": "4.3",
+      "unit": {
+        "code": "mg/dL",
+        "system": "http://unitsofmeasure.org",
+        "display": "milligrams per deciliter"
+      }
+    },
+    {
+      "id": "q20",
+      "text": "Weight (kg)",
+      "type": "decimal",
+      "link_id": "4.4",
+      "unit": {
+        "code": "kg",
+        "system": "http://unitsofmeasure.org",
+        "display": "kilograms"
+      }
+    },
+    {
+      "id": "q21",
+      "text": "Height (cm)",
+      "type": "decimal",
+      "link_id": "4.5",
+      "unit": {
+        "code": "cm",
+        "system": "http://unitsofmeasure.org",
+        "display": "centimeters"
+      }
+    },
+    {
+      "id": "q22",
+      "text": "Body Mass Index (kg/m²)",
+      "type": "decimal",
+      "link_id": "4.6"
+    }
+  ],
+  "created_by": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "first_name": "System",
+    "last_name": "",
+    "phone_number": "",
+    "username": "system",
+    "deleted": false
+  },
+  "updated_by": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "first_name": "System",
+    "last_name": "",
+    "phone_number": "",
+    "username": "system",
+    "deleted": false
+  },
+  "tags": [
+    {
+      "id": "b4f115c8-0af4-4481-aa42-df6ba85f843d",
+      "name": "NCD Screening",
+      "slug": "ncd_screening"
+    }
+  ]
+}
