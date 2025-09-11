@@ -1,0 +1,94 @@
+{
+  "title": "Vitals NCG",
+  "slug": "vitlas_ncg",
+  "description": "",
+  "questions": [
+    {
+      "id": "4bfa03dc-52e4-44b0-a52b-c8b5c8a2489e",
+      "text": "Vitals",
+      "type": "group",
+      "link_id": "1",
+      "questions": [
+        {
+          "id": "3800c88f-f3e4-4623-a1bf-87239a4e7de8",
+          "code": {
+            "code": "8480-6",
+            "system": "http://loinc.org",
+            "display": "Systolic blood pressure"
+          },
+          "text": "Systolic BP",
+          "type": "integer",
+          "link_id": "Q-1745560328633"
+        },
+        {
+          "id": "07aef172-a610-40d8-a97a-eaa66fdcc46b",
+          "code": {
+            "code": "8462-4",
+            "system": "http://loinc.org",
+            "display": "Diastolic blood pressure"
+          },
+          "text": "Diastolic BP",
+          "type": "integer",
+          "link_id": "Q-1745560329138"
+        },
+        {
+          "id": "5d15beed-6214-42dd-bbfe-84fca809e018",
+          "code": {
+            "code": "8310-5",
+            "system": "http://loinc.org",
+            "display": "Body temperature"
+          },
+          "text": "Temperature",
+          "type": "decimal",
+          "link_id": "Q-1745560329665"
+        },
+        {
+          "id": "e93b80e0-377f-490b-a678-155d5b393176",
+          "code": {
+            "code": "8867-4",
+            "system": "http://loinc.org",
+            "display": "Heart rate"
+          },
+          "text": "Pulse Rate",
+          "type": "integer",
+          "link_id": "Q-1745560330437"
+        },
+        {
+          "id": "d1477aa0-63be-440e-ba44-e980131a6dce",
+          "code": {
+            "code": "9279-1",
+            "system": "http://loinc.org",
+            "display": "Respiratory rate"
+          },
+          "text": "Respiratory Rate",
+          "type": "integer",
+          "link_id": "Q-1745560331000"
+        },
+        {
+          "id": "3e7ae00e-abd8-47d4-8fb9-a89c077fb35f",
+          "code": {
+            "code": "20564-1",
+            "system": "http://loinc.org",
+            "display": "Oxygen saturation in Blood"
+          },
+          "text": "SPO2",
+          "type": "integer",
+          "link_id": "Q-1745560335683"
+        }
+      ],
+      "styling_metadata": {
+        "containerClasses": "grid grid-cols-2"
+      }
+    }
+  ],
+  "status": "active",
+  "subject_type": "encounter",
+  "version": "",
+  "tags": [
+    {
+      "id": "9d18470c-0605-4922-92f1-d3b789006078",
+      "name": "Encounter",
+      "slug": "encounter_actions"
+    }
+  ]
+}
