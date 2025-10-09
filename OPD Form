@@ -1,0 +1,315 @@
+{
+  "title": "OPD Consultation Form",
+  "slug": "opd_consultation_form-1",
+  "description": "",
+  "questions": [
+    {
+      "id": "99497cde-e43f-4345-aa48-787f2622cf5c",
+      "text": "Date and Time of the Consultation",
+      "type": "dateTime",
+      "link_id": "Q-1753341369492",
+      "required": true
+    },
+    {
+      "id": "d4670cf2-16f6-4894-8ecd-19bc3191cefe",
+      "text": "Vitals",
+      "type": "group",
+      "link_id": "Q-1753341141411",
+      "repeats": false,
+      "questions": [
+        {
+          "id": "af2b988d-c133-47af-b315-1af63da740ce",
+          "text": "Blood Pressure",
+          "type": "group",
+          "link_id": "Q-1753341163656",
+          "repeats": false,
+          "questions": [
+            {
+              "id": "4d93f386-11fd-4078-a3d9-4291cad91af1",
+              "code": {
+                "code": "8480-6",
+                "system": "http://loinc.org",
+                "display": "Systolic blood pressure"
+              },
+              "text": "Systolic BP",
+              "type": "integer",
+              "unit": {
+                "code": "mm[Hg]",
+                "system": "http://unitsofmeasure.org",
+                "display": "millimeter of mercury"
+              },
+              "link_id": "Q-1753341189773"
+            },
+            {
+              "id": "742e3407-5217-4f79-ab35-b8bef68965ba",
+              "code": {
+                "code": "8462-4",
+                "system": "http://loinc.org",
+                "display": "Diastolic blood pressure"
+              },
+              "text": "Diastolic BP",
+              "type": "integer",
+              "unit": {
+                "code": "mm[Hg]",
+                "system": "http://unitsofmeasure.org",
+                "display": "millimeter of mercury"
+              },
+              "link_id": "Q-1753341191485"
+            }
+          ],
+          "styling_metadata": {
+            "containerClasses": "grid grid-cols-2"
+          }
+        },
+        {
+          "id": "258230ae-e38f-4830-84e5-55a39002e6c2",
+          "text": "Respiratory",
+          "type": "group",
+          "link_id": "Q-1753341518260",
+          "repeats": false,
+          "questions": [
+            {
+              "id": "01059aa6-cae8-4628-a520-563f62f57dac",
+              "code": {
+                "code": "9279-1",
+                "system": "http://loinc.org",
+                "display": "Respiratory rate"
+              },
+              "text": "Respiratory Rate",
+              "type": "integer",
+              "unit": {
+                "code": "/min",
+                "system": "http://unitsofmeasure.org",
+                "display": "per minute"
+              },
+              "link_id": "Q-1753341625463"
+            },
+            {
+              "id": "50563fcd-ccb4-41d5-92c8-76f9161107a6",
+              "code": {
+                "code": "11422-3",
+                "system": "http://loinc.org",
+                "display": "Physical findings of Chest"
+              },
+              "text": "Respiratory Sounds",
+              "type": "choice",
+              "link_id": "Q-1753341627591",
+              "answer_option": [
+                {
+                  "value": "Normal"
+                },
+                {
+                  "value": "Wheezing"
+                },
+                {
+                  "value": "Crackles"
+                },
+                {
+                  "value": "Diminished"
+                }
+              ]
+            }
+          ],
+          "styling_metadata": {
+            "containerClasses": "grid grid-cols-[1fr_2fr]"
+          }
+        },
+        {
+          "id": "b791a848-2b69-4031-8805-e93ff8bdb801",
+          "text": "Cardiovascular",
+          "type": "group",
+          "link_id": "Q-1753341845307",
+          "repeats": false,
+          "questions": [
+            {
+              "id": "56935dad-4bb2-4a35-80f2-3885e27fe07e",
+              "code": {
+                "code": "8867-4",
+                "system": "http://loinc.org",
+                "display": "Heart rate"
+              },
+              "text": "Heart Rate",
+              "type": "integer",
+              "unit": {
+                "code": "/min",
+                "system": "http://unitsofmeasure.org",
+                "display": "per minute"
+              },
+              "link_id": "Q-1753341870164"
+            },
+            {
+              "id": "bbcdd25a-4103-4481-833c-2193807df4da",
+              "code": {
+                "code": "80276-9",
+                "system": "http://loinc.org",
+                "display": "Heart sounds"
+              },
+              "text": "Heart Sounds",
+              "type": "choice",
+              "link_id": "Q-1753341871931",
+              "answer_option": [
+                {
+                  "value": "Normal"
+                },
+                {
+                  "value": "Murmur"
+                },
+                {
+                  "value": "Gallop"
+                },
+                {
+                  "value": "Diminished"
+                }
+              ]
+            }
+          ],
+          "styling_metadata": {
+            "containerClasses": "grid grid-cols-[1fr_2fr]"
+          }
+        },
+        {
+          "id": "f79483c7-3e3d-4d45-867f-480b9ceb5984",
+          "text": "                  ",
+          "type": "group",
+          "link_id": "Q-1753342248959",
+          "repeats": false,
+          "questions": [
+            {
+              "id": "ac3e209a-675d-4df3-890b-600d1f5f8db1",
+              "code": {
+                "code": "8310-5",
+                "system": "http://loinc.org",
+                "display": "Body temperature"
+              },
+              "text": "Temperature",
+              "type": "decimal",
+              "unit": {
+                "code": "[degF]",
+                "system": "http://unitsofmeasure.org",
+                "display": "degree Fahrenheit"
+              },
+              "link_id": "Q-1753342267349"
+            },
+            {
+              "id": "d6555f47-da75-4ede-9175-1ed64303c13e",
+              "code": {
+                "code": "20564-1",
+                "system": "http://loinc.org",
+                "display": "Oxygen saturation in Blood"
+              },
+              "text": "SpO2",
+              "type": "integer",
+              "unit": {
+                "code": "%",
+                "system": "http://unitsofmeasure.org",
+                "display": "percent"
+              },
+              "link_id": "Q-1753342269447"
+            }
+          ],
+          "styling_metadata": {
+            "containerClasses": "grid grid-cols-2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "57de6d3c-6776-4eb6-bb7e-5edc30af75b7",
+      "code": {
+        "code": "10164-2",
+        "system": "http://loinc.org",
+        "display": "History of Present illness Narrative"
+      },
+      "text": "Clinical History",
+      "type": "text",
+      "link_id": "Q-1753342475913"
+    },
+    {
+      "id": "87ed4310-c52d-4274-b555-0fd8fa1c56ac",
+      "text": "Complaints",
+      "type": "group",
+      "link_id": "Q-1753342621147",
+      "repeats": false,
+      "questions": [
+        {
+          "id": "a4ded718-d890-4ee5-a60f-724fd68a88b5",
+          "text": "Presenting Complaints",
+          "type": "text",
+          "link_id": "Q-1753342664021"
+        },
+        {
+          "id": "e0897d4c-525f-4b45-bb26-decfc7f6bdbf",
+          "text": "Symptoms",
+          "type": "structured",
+          "link_id": "Q-1753342665868",
+          "repeats": false,
+          "structured_type": "symptom"
+        }
+      ]
+    },
+    {
+      "id": "f62a3b39-3f74-4f5b-833d-2c833ed9a4ad",
+      "text": "Diagnosis",
+      "type": "structured",
+      "link_id": "Q-1753342721885",
+      "repeats": false,
+      "structured_type": "diagnosis"
+    },
+    {
+      "id": "dd529254-1cc0-44ba-84cd-92418572a34f",
+      "text": "Advice",
+      "type": "group",
+      "link_id": "Q-1753342753771",
+      "repeats": false,
+      "questions": [
+        {
+          "id": "6d054d34-09eb-4b1c-b118-a161804af651",
+          "text": "Prescribe Medication",
+          "type": "structured",
+          "link_id": "Q-1753342792468",
+          "repeats": false,
+          "structured_type": "medication_request"
+        },
+        {
+          "id": "e6df0ba1-3cdf-4b94-897a-5e9d968b758a",
+          "text": "Investigation suggestion",
+          "type": "structured",
+          "link_id": "Q-1753342814593",
+          "repeats": false,
+          "structured_type": "service_request"
+        },
+        {
+          "id": "5ecca825-6ecf-4a2a-ae43-d44af245f415",
+          "text": "Admission Recommend",
+          "type": "choice",
+          "link_id": "Q-1753342871476",
+          "required": true,
+          "answer_option": [
+            {
+              "value": "YES"
+            },
+            {
+              "value": "NO"
+            }
+          ]
+        },
+        {
+          "id": "e11a17cc-27dc-41fb-b9f9-9bd70db87e9e",
+          "text": "Follow-up Advice",
+          "type": "text",
+          "link_id": "Q-1753342939883"
+        }
+      ]
+    }
+  ],
+  "status": "active",
+  "subject_type": "encounter",
+  "version": "",
+  "tags": [
+    {
+      "id": "3382f176-eb16-44af-b26d-2582d57bc7c8",
+      "name": "Encounter Actions",
+      "slug": "encounter_actions"
+    }
+  ]
+}
