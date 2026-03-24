@@ -51,7 +51,7 @@ function loginToMetabase({ username, password }) {
 
 function fetchQuestion(sessionToken) {
   const response = UrlFetchApp.fetch(
-    'https://metabase.ohc.network/api/card/874/query/json',
+    'https://metabase.ohc.network/api/card/875/query/json',
     {
       method: 'post',
       headers: {
