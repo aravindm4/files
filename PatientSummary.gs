@@ -63,88 +63,52 @@ function fetchQuestion(sessionToken) {
   return JSON.parse(response.getContentText());
 }
 
-// ─── Write raw data to Raw_Data sheet ────────────────────────────────────────
-
-function writeRawData(data) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const SHEET_NAME = 'Raw_Data';
-
-  let sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
-  sheet.clear();
-
-  if (!data || data.length === 0) {
-    sheet.getRange('A1').setValue('No data');
-    return;
-  }
-
-  const headers = Object.keys(data[0]);
-  const rows = data.map(row => headers.map(h => row[h] !== undefined ? row[h] : ''));
-
-  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
-}
-
 // ─── Generate Patient Summary ─────────────────────────────────────────────────
 
-function generatePatientSummary() {
+// Accepts the JSON array returned directly by fetchQuestion()
+function generatePatientSummary(records) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
 
-  const SOURCE = 'Raw_Data';
   const OUTPUT = 'Patient_Summary';
-
-  const sheet = ss.getSheetByName(SOURCE);
-  if (!sheet) throw new Error('Raw_Data sheet not found');
 
   let out = ss.getSheetByName(OUTPUT);
   if (!out) out = ss.insertSheet(OUTPUT);
   out.clear();
 
-  const data = sheet.getDataRange().getValues();
-  const headers = data[0];
-
-  const col = name => headers.indexOf(name);
-
-  // Column names match the Metabase query output (snake_case)
-  const SSMM     = col('ssmm_id');
-  const PATIENT  = col('patient_name');
-  const START    = col('period_start');
-  const END      = col('period_end');
-  const CATEGORY = col('category');
-  const PRICE    = col('total_price');
-  const CARETEAM = col('care_team_members');
+  if (!records || records.length === 0) {
+    out.getRange('A1').setValue('No data');
+    return;
+  }
 
   const categorySet = new Set();
   const grouped = {};
 
-  for (let i = 1; i < data.length; i++) {
-    const r = data[i];
+  records.forEach(r => {
+    if (!r.patient_name) return;
 
-    if (!r[PATIENT]) continue;
+    const key = r.ssmm_id + '|' + r.period_start + '|' + r.period_end;
 
-    const key = r[SSMM] + '|' + r[START] + '|' + r[END];
-
-    const cat   = r[CATEGORY];
-    const price = parseFloat(r[PRICE]) || 0;
+    const cat   = r.category;
+    const price = parseFloat(r.total_price) || 0;
 
     categorySet.add(cat);
 
     if (!grouped[key]) {
       grouped[key] = {
-        ssmm:    r[SSMM],
-        patient: r[PATIENT],
+        ssmm:    r.ssmm_id,
+        patient: r.patient_name,
         care:    new Set(),
-        start:   r[START],
-        end:     r[END],
+        start:   r.period_start,
+        end:     r.period_end,
         cats:    {}
       };
     }
 
-    if (r[CARETEAM]) grouped[key].care.add(r[CARETEAM]);
+    if (r.care_team_members) grouped[key].care.add(r.care_team_members);
 
     if (!grouped[key].cats[cat]) grouped[key].cats[cat] = 0;
     grouped[key].cats[cat] += price;
-  }
+  });
 
   const categories = Array.from(categorySet).sort();
 
@@ -195,8 +159,7 @@ function main() {
   const sessionToken = loginToMetabase(creds);
   const data = fetchQuestion(sessionToken);
 
-  writeRawData(data);
-  generatePatientSummary();
+  generatePatientSummary(data);
 
   SpreadsheetApp.getUi().alert('Done! Patient_Summary sheet has been updated.');
 }
