@@ -37,7 +37,7 @@ function getCredentials() {
 
 function loginToMetabase({ username, password }) {
   const response = UrlFetchApp.fetch(
-    'https://metabase.ohc.network/api/session',
+    'https://data-public.ssmmhospital.com/api/session',
     {
       method: 'post',
       contentType: 'application/json',
@@ -57,7 +57,7 @@ function fetchQuestion(sessionToken) {
 
   while (true) {
     const response = UrlFetchApp.fetch(
-      'https://metabase.ohc.network/api/card/875/query',
+      'https://data-public.ssmmhospital.com/api/card/212/query',
       {
         method: 'post',
         contentType: 'application/json',
