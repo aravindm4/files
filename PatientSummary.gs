@@ -50,17 +50,47 @@ function loginToMetabase({ username, password }) {
 }
 
 function fetchQuestion(sessionToken) {
-  const response = UrlFetchApp.fetch(
-    'https://metabase.ohc.network/api/card/875/query/json',
-    {
-      method: 'post',
-      headers: {
-        'X-Metabase-Session': sessionToken
-      }
-    }
-  );
+  const PAGE_SIZE = 2000;
+  const allRows = [];
+  let page = 1;
+  let cols = null;
 
-  return JSON.parse(response.getContentText());
+  while (true) {
+    const response = UrlFetchApp.fetch(
+      'https://metabase.ohc.network/api/card/875/query',
+      {
+        method: 'post',
+        contentType: 'application/json',
+        headers: {
+          'X-Metabase-Session': sessionToken
+        },
+        payload: JSON.stringify({
+          parameters: [],
+          page: { page: page, items: PAGE_SIZE }
+        })
+      }
+    );
+
+    const json = JSON.parse(response.getContentText());
+    const data = json.data;
+
+    if (!data || !data.rows || data.rows.length === 0) break;
+
+    if (!cols) {
+      cols = data.cols.map(c => c.name);
+    }
+
+    data.rows.forEach(row => {
+      const obj = {};
+      cols.forEach((col, i) => { obj[col] = row[i]; });
+      allRows.push(obj);
+    });
+
+    if (data.rows.length < PAGE_SIZE) break;
+    page++;
+  }
+
+  return allRows;
 }
 
 // ─── Generate Patient Summary ─────────────────────────────────────────────────
@@ -84,6 +114,8 @@ function generatePatientSummary(records) {
   const grouped = {};
 
   records.forEach(r => {
+    // Accept whichever field name Metabase returns for the patient name
+    if (!r.patient_name) r.patient_name = r['Patient Name'] || r['patient'] || r['name'] || '';
     if (!r.patient_name) return;
 
     const key = r.ssmm_id + '|' + r.period_start + '|' + r.period_end;
