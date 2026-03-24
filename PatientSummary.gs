@@ -105,13 +105,14 @@ function generatePatientSummary() {
 
   const col = name => headers.indexOf(name);
 
-  const SSMM     = col('SSMM ID');
-  const PATIENT  = col('PATIENT');
-  const START    = col('ENCOUNTER START DATE');
-  const END      = col('ENCOUNTER END DATE');
-  const CATEGORY = col('CATEGORY');
-  const PRICE    = col('TOTAL PRICE');
-  const CARETEAM = col('CARE TEAM');
+  // Column names match the Metabase query output (snake_case)
+  const SSMM     = col('ssmm_id');
+  const PATIENT  = col('patient_name');
+  const START    = col('period_start');
+  const END      = col('period_end');
+  const CATEGORY = col('category');
+  const PRICE    = col('total_price');
+  const CARETEAM = col('care_team_members');
 
   const categorySet = new Set();
   const grouped = {};
