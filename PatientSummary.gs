@@ -41,12 +41,61 @@ function loginToMetabase({ username, password }) {
     {
       method: 'post',
       contentType: 'application/json',
+      muteHttpExceptions: true,
       payload: JSON.stringify({ username: username, password: password })
     }
   );
 
-  const json = JSON.parse(response.getContentText());
+  const status = response.getResponseCode();
+  const body   = response.getContentText();
+  if (status !== 200) {
+    throw new Error('Metabase login failed (HTTP ' + status + '): ' + body.slice(0, 300));
+  }
+
+  const json = JSON.parse(body);
+  if (!json.id) throw new Error('Metabase login did not return a session token: ' + body.slice(0, 300));
   return json.id; // session token
+}
+
+function fetchOnePage(sessionToken, page, pageSize) {
+  const response = UrlFetchApp.fetch(
+    'https://data-public.ssmmhospital.com/api/card/212/query',
+    {
+      method: 'post',
+      contentType: 'application/json',
+      muteHttpExceptions: true,
+      headers: {
+        'X-Metabase-Session': sessionToken
+      },
+      payload: JSON.stringify({
+        parameters: [],
+        page: { page: page, items: pageSize }
+      })
+    }
+  );
+
+  const status = response.getResponseCode();
+  const body   = response.getContentText();
+
+  if (status === 401 || status === 403) {
+    return null; // signal caller to re-login
+  }
+
+  if (status !== 202 && status !== 200) {
+    throw new Error('Metabase query failed on page ' + page + ' (HTTP ' + status + '): ' + body.slice(0, 300));
+  }
+
+  let json;
+  try {
+    json = JSON.parse(body);
+  } catch (e) {
+    throw new Error(
+      'JSON parse error on page ' + page + ': ' + e.message +
+      ' — first 200 chars of response: ' + body.slice(0, 200)
+    );
+  }
+
+  return json;
 }
 
 function fetchQuestion(sessionToken) {
@@ -54,24 +103,20 @@ function fetchQuestion(sessionToken) {
   const allRows = [];
   let page = 1;
   let cols = null;
+  let token = sessionToken;
 
   while (true) {
-    const response = UrlFetchApp.fetch(
-      'https://data-public.ssmmhospital.com/api/card/212/query',
-      {
-        method: 'post',
-        contentType: 'application/json',
-        headers: {
-          'X-Metabase-Session': sessionToken
-        },
-        payload: JSON.stringify({
-          parameters: [],
-          page: { page: page, items: PAGE_SIZE }
-        })
-      }
-    );
+    let json = fetchOnePage(token, page, PAGE_SIZE);
 
-    const json = JSON.parse(response.getContentText());
+    // Session expired mid-run — re-authenticate once and retry
+    if (json === null) {
+      const creds = getCredentials();
+      if (!creds) throw new Error('Session expired and credentials were not re-entered.');
+      token = loginToMetabase(creds);
+      json = fetchOnePage(token, page, PAGE_SIZE);
+      if (json === null) throw new Error('Re-authentication failed; please check your credentials.');
+    }
+
     const data = json.data;
 
     if (!data || !data.rows || data.rows.length === 0) break;
