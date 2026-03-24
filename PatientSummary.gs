@@ -1,3 +1,13 @@
+// ─── Constants ───────────────────────────────────────────────────────────────
+
+// Apps Script's UrlFetchApp silently truncates responses above ~50 MB.
+// Treat anything over 40 MB as too large to parse safely.
+var MAX_SAFE_RESPONSE_BYTES = 40 * 1024 * 1024;
+
+// If a single page returns more than this multiple of the requested page size,
+// the server is ignoring the pagination parameter.
+var PAGINATION_FAILURE_MULTIPLIER = 2;
+
 // ─── Menu ────────────────────────────────────────────────────────────────────
 
 function onOpen() {
@@ -89,10 +99,48 @@ function fetchOnePage(sessionToken, page, pageSize) {
   try {
     json = JSON.parse(body);
   } catch (e) {
+    // Apps Script silently truncates URL Fetch responses larger than ~50 MB,
+    // which corrupts the JSON. When this happens the response starts with '['
+    // (the flat-array export format Metabase uses for this card type) and the
+    // Metabase page: {page, items} pagination parameter is being ignored, so
+    // the full dataset is returned in one shot.
+    //
+    // Fix required on the Metabase card: add {{limit}} and {{offset}} template
+    // variables to the SQL query and pass them as parameters here, OR add a
+    // date-range filter to the card and pass start/end dates as parameters so
+    // each request covers only a manageable slice of data.
+    if (body.length > MAX_SAFE_RESPONSE_BYTES) {
+      throw new Error(
+        'Response on page ' + page + ' is ' + Math.round(body.length / 1024 / 1024) + ' MB — ' +
+        'too large for Google Apps Script (50 MB limit). ' +
+        'The Metabase card is returning all rows without respecting the pagination parameter. ' +
+        'Add LIMIT/OFFSET template variables to the card SQL, or add a date-range filter ' +
+        'so each request returns a manageable slice of data.'
+      );
+    }
     throw new Error(
       'JSON parse error on page ' + page + ': ' + e.message +
       ' — first 200 chars of response: ' + body.slice(0, 200)
     );
+  }
+
+  // Metabase can return results in two different shapes depending on the card
+  // type and server version:
+  //
+  //   Standard format: { data: { cols: [{name},...], rows: [[v,v,...],...]}, ... }
+  //   Flat-array format: [ { col: val, ... }, ... ]
+  //
+  // Normalise the flat-array format so the rest of the code only has to deal
+  // with one shape.
+  if (Array.isArray(json)) {
+    if (json.length === 0) return { data: { cols: [], rows: [] } };
+    const colNames = Object.keys(json[0]);
+    return {
+      data: {
+        cols: colNames.map(name => ({ name: name })),
+        rows: json.map(record => colNames.map(name => record[name]))
+      }
+    };
   }
 
   return json;
@@ -120,6 +168,19 @@ function fetchQuestion(sessionToken) {
     const data = json.data;
 
     if (!data || !data.rows || data.rows.length === 0) break;
+
+    // If the server returned far more rows than the requested page size it has
+    // ignored the pagination parameter and is dumping the whole dataset.  Fail
+    // fast with a clear message rather than silently processing a partial or
+    // truncated result set.
+    if (data.rows.length > PAGE_SIZE * PAGINATION_FAILURE_MULTIPLIER) {
+      throw new Error(
+        'Page ' + page + ' returned ' + data.rows.length + ' rows but only ' + PAGE_SIZE +
+        ' were requested — the Metabase card is ignoring the pagination parameter ' +
+        'and returning the full dataset. Add LIMIT/OFFSET template variables to the ' +
+        'card SQL, or add a date-range filter to keep each response under 50 MB.'
+      );
+    }
 
     if (!cols) {
       cols = data.cols.map(c => c.name);
