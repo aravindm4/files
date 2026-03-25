@@ -180,11 +180,14 @@ function generatePatientSummary() {
 
   const headers = data[0];
 
+  // Normalize headers: trim whitespace and uppercase for matching
+  const normalized = headers.map(h => String(h).trim().toUpperCase());
+
   let out = ss.getSheetByName(OUTPUT);
   if (!out) out = ss.insertSheet(OUTPUT);
   out.clear();
 
-  const col = name => headers.indexOf(name);
+  const col = name => normalized.indexOf(name.toUpperCase());
 
   const SSMM = col("SSMM ID");
   const PATIENT = col("PATIENT");
@@ -194,12 +197,24 @@ function generatePatientSummary() {
   const PRICE = col("TOTAL PRICE");
   const CARETEAM = col("CARE TEAM");
 
+  // Validate that all required columns were found
+  const required = { "SSMM ID": SSMM, "PATIENT": PATIENT, "ENCOUNTER START DATE": START,
+    "ENCOUNTER END DATE": END, "CATEGORY": CATEGORY, "TOTAL PRICE": PRICE, "CARE TEAM": CARETEAM };
+  const missing = Object.entries(required).filter(([, idx]) => idx === -1).map(([name]) => name);
+  if (missing.length > 0) {
+    SpreadsheetApp.getUi().alert(
+      'Missing columns in Metabase data:\n' + missing.join(', ') +
+      '\n\nActual headers found:\n' + headers.join(', ')
+    );
+    return;
+  }
+
   const categorySet = new Set();
   const grouped = {};
 
   for (let i = 1; i < data.length; i++) {
 
-    const r = data[i];
+    const r = data[i].map(v => String(v).trim());
 
     if (!r[PATIENT]) continue;
 
