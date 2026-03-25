@@ -52,7 +52,7 @@ function loginToMetabase({ username, password }) {
 
 function fetchQuestion(sessionToken) {
   const response = UrlFetchApp.fetch(
-    'https://data-public.ssmmhospital.com/api/card/212/query/json',
+    'https://data-public.ssmmhospital.com/api/card/212/query/csv',
     {
       method: 'post',
       headers: {
@@ -61,7 +61,59 @@ function fetchQuestion(sessionToken) {
     }
   );
 
-  return JSON.parse(response.getContentText());
+  return parseCsv(response.getContentText());
+}
+
+/**
+ * Parse CSV text into a 2D array.
+ * Handles quoted fields containing commas, newlines, and escaped quotes.
+ */
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+
+    if (inQuotes) {
+      if (ch === '"') {
+        if (i + 1 < text.length && text[i + 1] === '"') {
+          field += '"';
+          i++;                   // skip escaped quote
+        } else {
+          inQuotes = false;      // end of quoted field
+        }
+      } else {
+        field += ch;
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        row.push(field);
+        field = '';
+      } else if (ch === '\n') {
+        row.push(field);
+        field = '';
+        if (row.length > 1 || row[0] !== '') rows.push(row);
+        row = [];
+      } else if (ch === '\r') {
+        // skip carriage return
+      } else {
+        field += ch;
+      }
+    }
+  }
+
+  // last field / row
+  if (field || row.length) {
+    row.push(field);
+    if (row.length > 1 || row[0] !== '') rows.push(row);
+  }
+
+  return rows;
 }
 
 /* ──────────────────────────────────────────────
@@ -74,21 +126,18 @@ function generatePatientSummary() {
 
   const OUTPUT = "Patient_Summary";
 
-  // Fetch data from Metabase instead of Raw_Data sheet
+  // Fetch data from Metabase (returns 2D array: headers + rows)
   const creds = getCredentials();
   if (!creds) return;
   const sessionToken = loginToMetabase(creds);
-  const jsonData = fetchQuestion(sessionToken);
+  const data = fetchQuestion(sessionToken);
 
-  if (!jsonData || jsonData.length === 0) {
+  if (!data || data.length < 2) {
     SpreadsheetApp.getUi().alert('No data returned from Metabase.');
     return;
   }
 
-  // Convert JSON objects to 2D array (same format as sheet.getDataRange().getValues())
-  const headers = Object.keys(jsonData[0]);
-  const data = [headers];
-  jsonData.forEach(row => data.push(headers.map(h => row[h])));
+  const headers = data[0];
 
   let out = ss.getSheetByName(OUTPUT);
   if (!out) out = ss.insertSheet(OUTPUT);
