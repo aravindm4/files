@@ -189,14 +189,14 @@ function generatePerformerSummary() {
 
   var CATEGORY  = col("CATEGORY");
   var PRICE     = col("TOTAL PRICE");
-  var DATETIME  = col("DATETIME");
-  var PERFORMER = col("PERFORMER");
+  var DATETIME  = col("MODIFIED DATE");
+  var PERFORMER = col("PERFORMER NAME");
 
   var required = {
     "CATEGORY": CATEGORY,
     "TOTAL PRICE": PRICE,
-    "DATETIME": DATETIME,
-    "PERFORMER": PERFORMER
+    "MODIFIED DATE": DATETIME,
+    "PERFORMER NAME": PERFORMER
   };
 
   var missing = Object.entries(required).filter(function (e) { return e[1] === -1; }).map(function (e) { return e[0]; });
