@@ -32,7 +32,7 @@ function getCredentials() {
 
 function loginToMetabase({ username, password }) {
   const response = UrlFetchApp.fetch(
-    'https://metabase.ohc.network/api/session',
+    'https://data.local.ssmmhospital.com/api/session',
     {
       method: 'post',
       contentType: 'application/json',
@@ -49,7 +49,7 @@ function loginToMetabase({ username, password }) {
 
 function fetchQuestion(sessionToken) {
   const response = UrlFetchApp.fetch(
-    'https://metabase.ohc.network/api/card/874/query/json',
+    'https://data.local.ssmmhospital.com/api/card/874/query/json',
     {
       method: 'post',
       headers: {
