@@ -3,7 +3,13 @@ function onOpen() {
     .createMenu('Metabase')
     .addItem('Sync Charges', 'main')
     .addItem('Generate Patient Summary', 'generatePatientSummary')
+    .addItem('Clear Credentials', 'clearCredentials')
     .addToUi();
+}
+
+function clearCredentials() {
+  PropertiesService.getUserProperties().deleteAllProperties();
+  SpreadsheetApp.getUi().alert('Credentials cleared. You will be prompted again on next run.');
 }
 
 function getCredentials() {
@@ -39,9 +45,20 @@ function loginToMetabase({ username, password }) {
       payload: JSON.stringify({
         username: username,
         password: password
-      })
+      }),
+      muteHttpExceptions: true
     }
   );
+
+  const code = response.getResponseCode();
+  if (code === 400 || code === 401) {
+    // Credentials are wrong or stale — clear them so user is re-prompted next time
+    PropertiesService.getUserProperties().deleteAllProperties();
+    throw new Error('Invalid Metabase credentials (HTTP ' + code + '). Your saved credentials have been cleared. Please run again to enter new credentials.');
+  }
+  if (code !== 200) {
+    throw new Error('Metabase login failed with HTTP ' + code + ': ' + response.getContentText());
+  }
 
   const json = JSON.parse(response.getContentText());
   return json.id; // session token
