@@ -189,17 +189,19 @@ function generatePatientSummary() {
 
   const col = name => normalized.indexOf(name.toUpperCase());
 
-  const SSMM = col("SSMM ID");
-  const PATIENT = col("PATIENT");
-  const START = col("ENCOUNTER START DATE");
-  const END = col("ENCOUNTER END DATE");
+  const SSMM = col("SSMM_ID");
+  const PATIENT = col("PATIENT_NAME");
+  const START = col("PERIOD_START");
+  const END = col("PERIOD_END");
   const CATEGORY = col("CATEGORY");
-  const PRICE = col("TOTAL PRICE");
-  const CARETEAM = col("CARE TEAM");
+  const PRICE = col("TOTAL_PRICE");
+  const CARETEAM = col("CARE_TEAM_MEMBERS");
 
   // Validate that all required columns were found
-  const required = { "SSMM ID": SSMM, "PATIENT": PATIENT, "ENCOUNTER START DATE": START,
-    "ENCOUNTER END DATE": END, "CATEGORY": CATEGORY, "TOTAL PRICE": PRICE, "CARE TEAM": CARETEAM };
+  const required = {
+    "ssmm_id": SSMM, "patient_name": PATIENT, "period_start": START,
+    "period_end": END, "category": CATEGORY, "total_price": PRICE, "care_team_members": CARETEAM
+  };
   const missing = Object.entries(required).filter(([, idx]) => idx === -1).map(([name]) => name);
   if (missing.length > 0) {
     SpreadsheetApp.getUi().alert(
