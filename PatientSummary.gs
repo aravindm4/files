@@ -5,8 +5,15 @@
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('Metabase')
+    .addItem('Sync Charges', 'main')
     .addItem('Generate Patient Summary', 'generatePatientSummary')
+    .addSeparator()
+    .addItem('Reset Credentials', 'resetCredentials')
     .addToUi();
+}
+
+function onInstall() {
+  onOpen();
 }
 
 function getCredentials() {
@@ -114,6 +121,40 @@ function parseCsv(text) {
   }
 
   return rows;
+}
+
+function resetCredentials() {
+  const props = PropertiesService.getUserProperties();
+  props.deleteProperty('MB_USERNAME');
+  props.deleteProperty('MB_PASSWORD');
+  SpreadsheetApp.getUi().alert('Metabase credentials have been cleared. You will be prompted on next run.');
+}
+
+function writeToSheet(data) {
+  const sheet = SpreadsheetApp.getActiveSheet();
+  sheet.clear();
+
+  if (!data || data.length === 0) {
+    sheet.getRange('A1').setValue('No data');
+    return;
+  }
+
+  // Pad rows to uniform length in case CSV produced ragged arrays
+  const colCount = data[0].length;
+  const uniform = data.map(r => {
+    while (r.length < colCount) r.push('');
+    return r.slice(0, colCount);
+  });
+
+  sheet.getRange(1, 1, uniform.length, colCount).setValues(uniform);
+}
+
+function main() {
+  const creds = getCredentials();
+  if (!creds) return;
+  const sessionToken = loginToMetabase(creds);
+  const data = fetchQuestion(sessionToken);
+  writeToSheet(data);
 }
 
 /* ──────────────────────────────────────────────
