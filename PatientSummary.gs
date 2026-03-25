@@ -218,18 +218,16 @@ function generatePerformerSummary() {
     var performer = r[PERFORMER];
     if (!performer) continue;
 
-    var date = extractDate(r[DATETIME]);
     var cat  = r[CATEGORY];
     var price = parseFloat(r[PRICE]) || 0;
 
     categorySet.add(cat);
 
-    var key = performer + "|" + date;
+    var key = performer;
 
     if (!grouped[key]) {
       grouped[key] = {
         performer: performer,
-        date: date,
         cats: {}
       };
     }
@@ -242,14 +240,13 @@ function generatePerformerSummary() {
 
   var header = [
     "PERFORMER",
-    "DATE",
   ].concat(categories).concat(["TOTAL"]);
 
   var output = [header];
 
   Object.values(grouped).forEach(function (g) {
 
-    var row = [g.performer, g.date];
+    var row = [g.performer];
     var total = 0;
 
     categories.forEach(function (c) {
