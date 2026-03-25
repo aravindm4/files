@@ -1,0 +1,63 @@
+SELECT 
+    emr_patient.name AS patient_name,
+    pi.value AS ssmm_id,
+    emr_encounter.created_date AS encounter_created_date,
+    emr_encounter.modified_date AS encounter_modified_date,
+    (emr_encounter.period->>'start')::timestamp AS period_start,
+    (emr_encounter.period->>'end')::timestamp AS period_end,
+    emr_chargeitemdefinition.title AS charge_item_name,
+    emr_chargeitem.quantity,
+    emr_chargeitem.total_price,
+    emr_chargeitem.modified_date AS chargeitem_modified_date,
+    emr_chargeitem.status AS chargeitem_status,
+    emr_resourcecategory.title AS category,
+    TRIM(COALESCE(u.prefix || ' ', '') || u.first_name || ' ' || COALESCE(u.last_name, '')) AS requested_by,
+    STRING_AGG(DISTINCT TRIM(COALESCE(ct_user.prefix || ' ', '') || ct_user.first_name || ' ' || COALESCE(ct_user.last_name, '')), ', ') AS care_team_members,
+    emr_invoice.number AS invoice_number,
+    emr_invoice.status AS invoice_status
+FROM emr_chargeitem
+JOIN emr_chargeitemdefinition ON emr_chargeitem.charge_item_definition_id = emr_chargeitemdefinition.id
+LEFT JOIN emr_resourcecategory ON emr_chargeitemdefinition.category_id = emr_resourcecategory.id  
+JOIN emr_patient ON emr_chargeitem.patient_id = emr_patient.id
+LEFT JOIN emr_patientidentifier pi ON emr_patient.id = pi.patient_id AND pi.config_id = 21
+LEFT JOIN emr_account ON emr_chargeitem.account_id = emr_account.id
+LEFT JOIN emr_encounter ON emr_account.primary_encounter_id = emr_encounter.id
+LEFT JOIN users_user u ON emr_chargeitem.performer_actor_id = u.id 
+LEFT JOIN emr_invoice ON emr_chargeitem.paid_invoice_id = emr_invoice.id
+LEFT JOIN LATERAL (
+    SELECT (ct_elem ->> 'user_id')::int AS user_id
+    FROM jsonb_array_elements(
+        CASE 
+            WHEN emr_encounter.care_team IS NOT NULL 
+            AND jsonb_typeof(emr_encounter.care_team) = 'array' 
+            THEN emr_encounter.care_team 
+            ELSE '[]'::jsonb 
+        END
+    ) AS ct_elem
+) AS ct ON TRUE
+LEFT JOIN users_user ct_user ON ct.user_id = ct_user.id
+WHERE emr_chargeitem.deleted = FALSE
+  AND emr_encounter.encounter_class = 'imp'
+  AND emr_invoice.status IN ('issued', 'balanced')
+  AND (emr_encounter.period->>'end')::timestamp >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month'
+  AND (emr_encounter.period->>'end')::timestamp < DATE_TRUNC('month', CURRENT_DATE)
+  [[AND pi.value = {{ssmm_id}}]]
+  [[AND emr_chargeitem.status IN ({{status}})]] 
+  [[AND TRIM(COALESCE(u.prefix || ' ', '') || u.first_name || ' ' || COALESCE(u.last_name, '')) = {{doctor}}]]
+  [[AND emr_resourcecategory.title IN ({{category}})]]  
+GROUP BY 
+    emr_patient.name,
+    pi.value,
+    emr_encounter.created_date,
+    emr_encounter.modified_date,
+    emr_encounter.period,
+    emr_chargeitemdefinition.title,
+    emr_chargeitem.quantity,
+    emr_chargeitem.total_price,
+    emr_chargeitem.modified_date,
+    emr_chargeitem.status,
+    emr_resourcecategory.title,
+    u.prefix, u.first_name, u.last_name,
+    emr_invoice.number,
+    emr_invoice.status
+ORDER BY patient_name;
