@@ -7,6 +7,7 @@ function onOpen() {
     .createMenu('Metabase')
     .addItem('Sync Charges', 'main')
     .addItem('Generate Patient Summary', 'generatePatientSummary')
+    .addItem('Generate Performer Summary', 'generatePerformerSummary')
     .addSeparator()
     .addItem('Reset Credentials', 'resetCredentials')
     .addToUi();
@@ -58,8 +59,12 @@ function loginToMetabase({ username, password }) {
 }
 
 function fetchQuestion(sessionToken) {
+  return fetchQuestionById(sessionToken, 212);
+}
+
+function fetchQuestionById(sessionToken, questionId) {
   const response = UrlFetchApp.fetch(
-    'https://data-public.ssmmhospital.com/api/card/212/query/csv',
+    'https://data-public.ssmmhospital.com/api/card/' + questionId + '/query/csv',
     {
       method: 'post',
       headers: {
@@ -291,9 +296,147 @@ function generatePatientSummary() {
 
   });
 
-  out.getRange(1,1,output.length,output[0].length).setValues(output);
+  out.getRange(1, 1, output.length, output[0].length).setValues(output);
 
   out.setFrozenRows(1);
-  out.autoResizeColumns(1,output[0].length);
+  out.autoResizeColumns(1, output[0].length);
 
+}
+
+/* ──────────────────────────────────────────────
+   Performer Summary Generator
+   ────────────────────────────────────────────── */
+
+/**
+ * Extract date portion from a datetime string.
+ * Handles "Feb 28, 2026, 11:54 PM" → "Feb 28, 2026"
+ * and ISO format "2026-02-28T23:54:00" → "2026-02-28".
+ */
+function extractDate(datetimeStr) {
+  if (!datetimeStr) return '';
+
+  // "Mon DD, YYYY, HH:MM AM/PM" → "Mon DD, YYYY"
+  var match = datetimeStr.match(/^([A-Za-z]+ \d{1,2}, \d{4})/);
+  if (match) return match[1];
+
+  // ISO "YYYY-MM-DD..."
+  var isoMatch = datetimeStr.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (isoMatch) return isoMatch[1];
+
+  // Fallback: everything before the last comma
+  var parts = datetimeStr.split(',');
+  if (parts.length >= 3) return parts.slice(0, 2).join(',').trim();
+
+  return datetimeStr;
+}
+
+function generatePerformerSummary() {
+
+  var QUESTION_ID = 213; // Metabase question ID for the CHARGEITEM LIST dataset
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var OUTPUT = "Performer_Summary";
+
+  var creds = getCredentials();
+  if (!creds) return;
+  var sessionToken = loginToMetabase(creds);
+  var data = fetchQuestionById(sessionToken, QUESTION_ID);
+
+  if (!data || data.length < 2) {
+    SpreadsheetApp.getUi().alert('No data returned from Metabase.');
+    return;
+  }
+
+  var headers = data[0];
+  var normalized = headers.map(function (h) { return String(h).trim().toUpperCase(); });
+
+  var out = ss.getSheetByName(OUTPUT);
+  if (!out) out = ss.insertSheet(OUTPUT);
+  out.clear();
+
+  // Column lookup (case-insensitive, tries both spaced and snake_case variants)
+  function col(name) {
+    var idx = normalized.indexOf(name.toUpperCase());
+    if (idx === -1) idx = normalized.indexOf(name.toUpperCase().replace(/ /g, '_'));
+    return idx;
+  }
+
+  var CATEGORY  = col("CATEGORY");
+  var PRICE     = col("TOTAL PRICE");
+  var DATETIME  = col("DATETIME");
+  var PERFORMER = col("PERFORMER");
+
+  var required = {
+    "CATEGORY": CATEGORY,
+    "TOTAL PRICE": PRICE,
+    "DATETIME": DATETIME,
+    "PERFORMER": PERFORMER
+  };
+
+  var missing = Object.entries(required).filter(function (e) { return e[1] === -1; }).map(function (e) { return e[0]; });
+  if (missing.length > 0) {
+    SpreadsheetApp.getUi().alert(
+      'Missing columns in Metabase data:\n' + missing.join(', ') +
+      '\n\nActual headers found:\n' + headers.join(', ')
+    );
+    return;
+  }
+
+  var categorySet = new Set();
+  var grouped = {};
+
+  for (var i = 1; i < data.length; i++) {
+
+    var r = data[i].map(function (v) { return String(v).trim(); });
+
+    var performer = r[PERFORMER];
+    if (!performer) continue;
+
+    var date = extractDate(r[DATETIME]);
+    var cat  = r[CATEGORY];
+    var price = parseFloat(r[PRICE]) || 0;
+
+    categorySet.add(cat);
+
+    var key = performer + "|" + date;
+
+    if (!grouped[key]) {
+      grouped[key] = {
+        performer: performer,
+        date: date,
+        cats: {}
+      };
+    }
+
+    if (!grouped[key].cats[cat]) grouped[key].cats[cat] = 0;
+    grouped[key].cats[cat] += price;
+  }
+
+  var categories = Array.from(categorySet).sort();
+
+  var header = [
+    "PERFORMER",
+    "DATE",
+  ].concat(categories).concat(["TOTAL"]);
+
+  var output = [header];
+
+  Object.values(grouped).forEach(function (g) {
+
+    var row = [g.performer, g.date];
+    var total = 0;
+
+    categories.forEach(function (c) {
+      var v = g.cats[c] || 0;
+      row.push(v);
+      total += v;
+    });
+
+    row.push(total);
+    output.push(row);
+  });
+
+  out.getRange(1, 1, output.length, output[0].length).setValues(output);
+  out.setFrozenRows(1);
+  out.autoResizeColumns(1, output[0].length);
 }
