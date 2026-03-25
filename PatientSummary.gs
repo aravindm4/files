@@ -219,6 +219,7 @@ function generatePerformerSummary() {
     if (!performer) continue;
 
     var cat  = r[CATEGORY];
+    if (!cat) continue;
     var price = parseFloat(r[PRICE]) || 0;
 
     categorySet.add(cat);
