@@ -5,7 +5,7 @@
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('Metabase')
-    .addItem('Sync Charges', 'main')
+    .addItem('Generate Patient Summary', 'generatePatientSummary')
     .addToUi();
 }
 
@@ -64,30 +64,6 @@ function fetchQuestion(sessionToken) {
   return JSON.parse(response.getContentText());
 }
 
-function writeToSheet(data) {
-  const sheet = SpreadsheetApp.getActiveSheet();
-  sheet.clear();
-
-  if (!data || data.length === 0) {
-    sheet.getRange('A1').setValue('No data');
-    return;
-  }
-
-  // Extract headers
-  const headers = Object.keys(data[0]);
-  const rows = data.map(row => headers.map(h => row[h]));
-
-  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
-}
-
-function main() {
-  const creds = getCredentials();
-  const sessionToken = loginToMetabase(creds);
-  const data = fetchQuestion(sessionToken);
-  writeToSheet(data);
-}
-
 /* ──────────────────────────────────────────────
    Patient Summary Generator
    ────────────────────────────────────────────── */
@@ -96,18 +72,27 @@ function generatePatientSummary() {
 
   const ss = SpreadsheetApp.getActiveSpreadsheet();
 
-  const SOURCE = "Raw_Data";
   const OUTPUT = "Patient_Summary";
 
-  const sheet = ss.getSheetByName(SOURCE);
-  if (!sheet) throw new Error("Raw_Data sheet not found");
+  // Fetch data from Metabase instead of Raw_Data sheet
+  const creds = getCredentials();
+  if (!creds) return;
+  const sessionToken = loginToMetabase(creds);
+  const jsonData = fetchQuestion(sessionToken);
+
+  if (!jsonData || jsonData.length === 0) {
+    SpreadsheetApp.getUi().alert('No data returned from Metabase.');
+    return;
+  }
+
+  // Convert JSON objects to 2D array (same format as sheet.getDataRange().getValues())
+  const headers = Object.keys(jsonData[0]);
+  const data = [headers];
+  jsonData.forEach(row => data.push(headers.map(h => row[h])));
 
   let out = ss.getSheetByName(OUTPUT);
   if (!out) out = ss.insertSheet(OUTPUT);
   out.clear();
-
-  const data = sheet.getDataRange().getValues();
-  const headers = data[0];
 
   const col = name => headers.indexOf(name);
 
